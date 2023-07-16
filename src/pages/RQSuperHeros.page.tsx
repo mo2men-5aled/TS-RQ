@@ -16,22 +16,29 @@ const fetchSuperHeroes = async () => {
 };
 
 const RQSuperHeroes = () => {
-  const { isLoading, data, error, isError } = useQuery<
+  const { isLoading, data, error, isError, refetch, isFetching } = useQuery<
     SuperHero[],
     CustomError
-  >("super-heroes", fetchSuperHeroes);
+  >("super-heroes", fetchSuperHeroes, {
+    enabled: false,
+  });
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  if (isError) {
+  if (isError || isFetching) {
     return <div>{error?.message || "Something went wrong..."}</div>;
   }
+
+  const handleRefetch = (_event: React.MouseEvent<HTMLButtonElement>) => {
+    refetch();
+  };
 
   return (
     <div>
       <h1>RQSuperHeroes Page</h1>
+      <button onClick={handleRefetch}>Refetch</button>
       <ul>
         {data?.map((item: SuperHero) => (
           <li key={item.id}>{item.name}</li>
