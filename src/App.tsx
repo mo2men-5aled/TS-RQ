@@ -1,4 +1,5 @@
-import logo from "./logo.svg";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import "./App.css";
 
 import Home from "./pages/Home.page";
@@ -8,8 +9,10 @@ import RQSuperHeros from "./pages/RQSuperHeros.page";
 import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <nav>
           <ul>
@@ -30,7 +33,7 @@ function App() {
           <Route path="/rq-super-heros" element={<RQSuperHeros />} />
         </Routes>
       </BrowserRouter>
-    </div>
+    </QueryClientProvider>
   );
 }
 
