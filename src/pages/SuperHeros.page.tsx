@@ -14,19 +14,28 @@ interface Item {
 const SuperHeros = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState<Item[] | null>(null);
+  const [error, setError] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true);
-      const result = await instance.get("/superheroes");
-      setData(result.data);
-      setIsLoading(false);
+      try {
+        const response = await instance.get("/superheroes");
+        setData(response.data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, []);
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Something went wrong...</div>;
   }
 
   return (
