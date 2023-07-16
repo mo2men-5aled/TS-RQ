@@ -15,12 +15,20 @@ const fetchSuperHeroes = async () => {
   return response.data;
 };
 
+const onSuccess = () => {
+  console.log("Perform a side effect after data fetching ");
+};
+const onError = () => {
+  console.log("Perform a side effect after Error detected ");
+};
+
 const RQSuperHeroes = () => {
   const { isLoading, data, error, isError, refetch, isFetching } = useQuery<
     SuperHero[],
     CustomError
   >("super-heroes", fetchSuperHeroes, {
-    enabled: false,
+    onError,
+    onSuccess,
   });
 
   if (isLoading) {
